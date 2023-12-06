@@ -27,7 +27,7 @@ NRC,Clave,Materia,Secc,Días,Hora,Profesor,Salón,unnamed
 ```
 
 - `Días` changes to `Dia`
-- `Salon` to `Salon`
+- `Salón` to `Salon`
 - Remove every `unnamed` column
 
 You must got something like this:
@@ -91,26 +91,26 @@ Sistemas de Tiempo Real
 
 ```mermaid
 erDiagram
-    CLASE }|--|| PROFESOR: Tiene
-    CLASE }|--|| MATERIA: "Se imparte"
-    EVENTO }|--|| CLASE: "Se repite en cada"
-    EVENTO }|--|{ LUGAR: "Se realiza en"
-    MATERIA }|--|{ PROFESOR: Imparte
+    Clase }|--|| Profesor: Tiene
+    Clase }|--|| Materia: "Se imparte"
+    Evento }|--|| Clase: "Se repite en cada"
+    Evento }|--|{ Lugar: "Se realiza en"
+    Materia }|--|{ Profesor: Imparte
 
-    CLASE {
+    Clase {
         int NRC PK
         int IdProfesor FK
         int IdMateria FK
     }
 
-    PROFESOR {
+    Profesor {
         int IdProfesor PK
         string Nombre
         string ApellidoPaterno
         string ApellidoMaterno
     }
 
-    EVENTO {
+    Evento {
         int idEvento PK
         int NRC FK
         int Duracion "En horas"
@@ -118,12 +118,12 @@ erDiagram
         string HoraInicio "24 horas. i.e 1400 == 14:00"
     }
 
-    MATERIA {
+    Materia {
         int IdMateria PK
         string NombreMateria "No abreviaturas"
     }
 
-    LUGAR {
+    Lugar {
         int IdLugar PK
         string Edificio
         string Salon
