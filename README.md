@@ -16,7 +16,7 @@ python3 readcsv.py
 
 You must rename your csv as `p2024` and following this guidelines.
 
-### Guidelines
+### CSV Guidelines
 
 > We recommend use google spreadsheets.
 
