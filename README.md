@@ -38,17 +38,78 @@ NRC,Clave,Materia,Secc,Dia,Hora,Profesor,Salon
 
 ## Use Cases
 
+Muestra el NRC, la duración, los dias y la hora en que se impartirá la clase de *inalambricas* y excluye a los profesores que su apellido materno sea *Lopez*.
+
+```sql
+SELECT * 
+FROM Evento 
+WHERE NRC IN (
+   SELECT NRC 
+   FROM Clase 
+   WHERE IdProfesor IN (
+       SELECT IdProfesor 
+       FROM Profesor 
+       WHERE IdProfesor IN (
+           SELECT IdProfesor 
+           FROM Clase 
+           WHERE IdMateria IN (
+               SELECT IdMateria 
+               FROM Materia 
+               WHERE NombreMateria LIKE '%Inalambricas%'
+           )
+       ) 
+       AND IdProfesor NOT IN (
+           SELECT IdProfesor 
+           FROM Profesor 
+           WHERE ApellidoMaterno LIKE '%Lopez%'
+       )
+   )
+);
+```
+
+```bash
+IdEvento|NRC|Duracion|DiaSemana|HoraInicio
+28|50959|1|Lunes|1400
+29|50959|2|Martes|1300
+30|50959|2|Jueves|1300
+584|57765|1|Lunes|1200
+585|57765|2|Martes|1100
+586|57765|2|Jueves|1100
+593|58464|1|Lunes|1800
+594|58464|2|Martes|1700
+595|58464|2|Jueves|1700
+726|58164|1|Lunes|0700
+727|58164|2|Miercoles|0700
+728|58164|2|Viernes|0700
+729|57766|1|Lunes|1300
+730|57766|2|Miercoles|1300
+731|57766|2|Viernes|1300
+732|58469|1|Lunes|2000
+733|58469|2|Martes|1900
+734|58469|2|Jueves|1900
+```
+
 Obtener todas las materias que se llevaran a cabo de forma virtual (CCO1V)
 
 ```sql
-select NombreMateria from Materia where IdMateria in (
-    select IdMateria from Clase where NRC in (
-        select NRC from Evento where IdEvento in (
-            select IdEvento from Evento_SeRealizaEn_Lugar where IdLugar in (
-                select IdLugar from Lugar where Edificio like '%CCO1V%'
-            )
-        )
-    )
+SELECT NombreMateria 
+FROM Materia 
+WHERE IdMateria IN (
+   SELECT IdMateria 
+   FROM Clase 
+   WHERE NRC IN (
+       SELECT NRC 
+       FROM Evento 
+       WHERE IdEvento IN (
+           SELECT IdEvento 
+           FROM Evento_SeRealizaEn_Lugar 
+           WHERE IdLugar IN (
+               SELECT IdLugar 
+               FROM Lugar 
+               WHERE Edificio LIKE '%CCO1V%'
+           )
+       )
+   )
 );
 ```
 
@@ -72,10 +133,16 @@ Web Semantica
 Todas las materias que impartirá un profesor (buscado por su apellido paterno)
 
 ```sql
-select NombreMateria from Materia where IdMateria in (
-    select IdMateria from Profesor_Imparte_Materia where IdProfesor in (
-        select IdProfesor from Profesor where ApellidoPaterno like '%Colmenares%'
-    )
+SELECT NombreMateria 
+FROM Materia 
+WHERE IdMateria IN (
+  SELECT IdMateria 
+  FROM Profesor_Imparte_Materia 
+  WHERE IdProfesor IN (
+      SELECT IdProfesor 
+      FROM Profesor 
+      WHERE ApellidoPaterno LIKE '%Colmenares%'
+  )
 );
 ```
 
@@ -90,11 +157,25 @@ Sistemas de Tiempo Real
 Lista todos los profesores que tendrán que caminar para dar clases en los EMAS
 
 ```sql
-select Nombre, ApellidoMaterno from Profesor where IdProfesor in (
-    select IdProfesor from Clase where NRC in (
-        select NRC from Evento where IdEvento in (
-            select IdEvento from Evento_SeRealizaEn_Lugar where IdLugar in (
-                select IdLugar from Lugar where Edificio like '%EMA%'))));
+SELECT Nombre, ApellidoMaterno 
+FROM Profesor 
+WHERE IdProfesor IN (
+   SELECT IdProfesor 
+   FROM Clase 
+   WHERE NRC IN (
+       SELECT NRC 
+       FROM Evento 
+       WHERE IdEvento IN (
+           SELECT IdEvento 
+           FROM Evento_SeRealizaEn_Lugar 
+           WHERE IdLugar IN (
+               SELECT IdLugar 
+               FROM Lugar 
+               WHERE Edificio LIKE '%EMA%'
+           )
+       )
+   )
+);
 ```
 
 ```bash
