@@ -38,7 +38,7 @@ NRC,Clave,Materia,Secc,Dia,Hora,Profesor,Salon
 
 ## Use Cases
 
-Muestra el NRC, la duración, los dias y la hora en que se impartirá la clase de *inalambricas* y excluye a los profesores que su apellido materno sea *Lopez*.
+Muestra el NRC, la duración, los dias y la hora en que se impartirá la clase de *inalambricas* y excluye a los profesores que su apellido materno sea *Beris*.
 
 ```sql
 SELECT * FROM Evento WHERE NRC in (
