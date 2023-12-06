@@ -48,20 +48,24 @@ WHERE NRC IN (
    FROM Clase 
    WHERE IdProfesor IN (
        SELECT IdProfesor 
-       FROM Profesor 
-       WHERE IdProfesor IN (
-           SELECT IdProfesor 
-           FROM Clase 
-           WHERE IdMateria IN (
-               SELECT IdMateria 
-               FROM Materia 
-               WHERE NombreMateria LIKE '%Inalambricas%'
-           )
-       ) 
-       AND IdProfesor NOT IN (
-           SELECT IdProfesor 
+       FROM (
+           SELECT * 
            FROM Profesor 
-           WHERE ApellidoMaterno LIKE '%Lopez%'
+           WHERE IdProfesor IN (
+               SELECT IdProfesor 
+               FROM Profesor_Imparte_Materia 
+               WHERE IdMateria IN (
+                  SELECT IdMateria 
+                  FROM Materia 
+                  WHERE NombreMateria LIKE '%inalambrica%'
+               )
+           ) 
+           WHERE ApellidoMaterno NOT LIKE '%Beris%'
+       ) 
+       AND IdMateria IN (
+           SELECT IdMateria 
+           FROM Materia 
+           WHERE NombreMateria LIKE '%inalambrica%'
        )
    )
 );
