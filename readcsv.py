@@ -127,3 +127,11 @@ with open('./p2024.csv', newline='') as f:
 
     conexion.commit()
     conexion.close()
+
+    """
+    select ApellidoPaterno, ApellidoMaterno, Nombre from Profesor where IdProfesor in (
+        select IdProfesor from Clase where NRC in (
+            select NRC from Evento where IdEvento in (
+                select IdEvento from Evento_SeRealizaEn_Lugar where IdLugar in (
+                    select IdLugar from Lugar where Edificio like '%EMA%'))));
+    """

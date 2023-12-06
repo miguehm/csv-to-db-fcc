@@ -87,6 +87,48 @@ Formacion Humana y Social
 Sistemas de Tiempo Real
 ```
 
+Lista todos los profesores que tendrán que caminar para dar clases en los EMAS
+
+```sql
+select Nombre, ApellidoMaterno from Profesor where IdProfesor in (
+    select IdProfesor from Clase where NRC in (
+        select NRC from Evento where IdEvento in (
+            select IdEvento from Evento_SeRealizaEn_Lugar where IdLugar in (
+                select IdLugar from Lugar where Edificio like '%EMA%'))));
+```
+
+```bash
+Nombre|ApellidoMaterno
+Jesus|Ramirez
+Arlem Aleida|Avila
+Karina|Lopez
+Adriana|Beristain
+Angel Omar|Rojas
+Luz Del Carmen|Garces
+Maria De Lourdes|Solis
+Jose De Jesus|Martinez
+Fernando|Flores
+Jose|Garcia
+Maria De La|Herrero
+Carlos|Lima
+Arturo Alejandro|Gonzalez
+Berenice|Pedroza
+Roberto|Enriquez
+Jose Bernardo|Victorino
+Erika|Barragan
+Patricia|Sanchez
+Jose|Madrid
+Hilda|Matias
+Veronica Edith|Lopez
+Lilia|Narvaez
+Maria Del Carmen|Diaz
+Erika Annabel|Miron
+Rosa|Tamayo
+Guillermina|Roman
+Carlos Mauricio|Espitia
+Josue|Lucero
+```
+
 ## Entity Relationship Diagram
 
 ```mermaid
@@ -139,3 +181,7 @@ erDiagram
         int IdLugar FK
     }
 ```
+
+## TODO
+
+- [ ] Save lastnames with 2 or more words properly.
