@@ -41,58 +41,30 @@ NRC,Clave,Materia,Secc,Dia,Hora,Profesor,Salon
 Muestra el NRC, la duración, los dias y la hora en que se impartirá la clase de *inalambricas* y excluye a los profesores que su apellido materno sea *Lopez*.
 
 ```sql
-SELECT * 
-FROM Evento 
-WHERE NRC IN (
-   SELECT NRC 
-   FROM Clase 
-   WHERE IdProfesor IN (
-       SELECT IdProfesor 
-       FROM (
-           SELECT * 
-           FROM Profesor 
-           WHERE IdProfesor IN (
-               SELECT IdProfesor 
-               FROM Profesor_Imparte_Materia 
-               WHERE IdMateria IN (
-                  SELECT IdMateria 
-                  FROM Materia 
-                  WHERE NombreMateria LIKE '%inalambrica%'
-               )
-           ) 
-           WHERE ApellidoMaterno NOT LIKE '%Beris%'
-       ) 
-       AND IdMateria IN (
-           SELECT IdMateria 
-           FROM Materia 
-           WHERE NombreMateria LIKE '%inalambrica%'
-       )
-   )
-);
+SELECT * FROM Evento WHERE NRC in (
+    SELECT NRC FROM Clase WHERE IdProfesor in (
+        SELECT IdProfesor FROM (
+            SELECT * FROM Profesor WHERE IdProfesor in (
+                SELECT IdProfesor FROM Profesor_Imparte_Materia WHERE IdMateria in (
+                    SELECT IdMateria FROM Materia WHERE NombreMateria like '%inalambrica%'))) WHERE ApellidoMaterno not like '%Beris%')
+and 
+IdMateria in (
+    SELECT Idmateria FROM Materia WHERE NombreMateria like '%inalambrica%'));
 ```
 
 **Result**:
 
 ```bash
 IdEvento|NRC|Duracion|DiaSemana|HoraInicio
-28|50959|1|Lunes|1400
-29|50959|2|Martes|1300
-30|50959|2|Jueves|1300
-584|57765|1|Lunes|1200
-585|57765|2|Martes|1100
-586|57765|2|Jueves|1100
-593|58464|1|Lunes|1800
-594|58464|2|Martes|1700
-595|58464|2|Jueves|1700
 726|58164|1|Lunes|0700
 727|58164|2|Miercoles|0700
 728|58164|2|Viernes|0700
-729|57766|1|Lunes|1300
-730|57766|2|Miercoles|1300
-731|57766|2|Viernes|1300
 732|58469|1|Lunes|2000
 733|58469|2|Martes|1900
 734|58469|2|Jueves|1900
+735|57438|1|Lunes|1700
+736|57438|2|Miercoles|1700
+737|57438|2|Viernes|1700
 ```
 
 Obtener todas las materias que se llevaran a cabo de forma virtual (CCO1V)
