@@ -67,6 +67,8 @@ WHERE NRC IN (
 );
 ```
 
+**Result**:
+
 ```bash
 IdEvento|NRC|Duracion|DiaSemana|HoraInicio
 28|50959|1|Lunes|1400
