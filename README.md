@@ -41,15 +41,36 @@ NRC,Clave,Materia,Secc,Dia,Hora,Profesor,Salon
 Muestra el NRC, la duración, los dias y la hora en que se impartirá la clase de *inalambricas* y excluye a los profesores que su apellido materno sea *Beris*.
 
 ```sql
-SELECT * FROM Evento WHERE NRC in (
-    SELECT NRC FROM Clase WHERE IdProfesor in (
-        SELECT IdProfesor FROM (
-            SELECT * FROM Profesor WHERE IdProfesor in (
-                SELECT IdProfesor FROM Profesor_Imparte_Materia WHERE IdMateria in (
-                    SELECT IdMateria FROM Materia WHERE NombreMateria like '%inalambrica%'))) WHERE ApellidoMaterno not like '%Beris%')
-and 
-IdMateria in (
-    SELECT Idmateria FROM Materia WHERE NombreMateria like '%inalambrica%'));
+SELECT * 
+FROM Evento 
+WHERE NRC IN (
+    SELECT NRC 
+    FROM Clase 
+    WHERE IdProfesor IN (
+        SELECT IdProfesor 
+        FROM (
+            SELECT * 
+            FROM Profesor 
+            WHERE IdProfesor IN (
+                SELECT IdProfesor 
+                FROM Profesor_Imparte_Materia 
+                WHERE IdMateria IN (
+                    SELECT IdMateria 
+                    FROM Materia 
+                    WHERE NombreMateria LIKE '%inalambrica%'
+                )
+            )
+        )
+        WHERE ApellidoMaterno NOT LIKE '%Beris%'
+    )
+    AND 
+    IdMateria IN (
+        SELECT Idmateria 
+        FROM Materia 
+        WHERE NombreMateria 
+        LIKE '%inalambrica%'
+    )
+);
 ```
 
 **Result**:
@@ -114,13 +135,13 @@ Todas las materias que impartirá un profesor (buscado por su apellido paterno)
 SELECT NombreMateria 
 FROM Materia 
 WHERE IdMateria IN (
-  SELECT IdMateria 
-  FROM Profesor_Imparte_Materia 
-  WHERE IdProfesor IN (
-      SELECT IdProfesor 
-      FROM Profesor 
-      WHERE ApellidoPaterno LIKE '%Colmenares%'
-  )
+    SELECT IdMateria 
+    FROM Clase 
+    WHERE IdProfesor IN (
+        SELECT IdProfesor 
+        FROM Profesor 
+        WHERE ApellidoPaterno like '%colmenares%'
+    )
 );
 ```
 
