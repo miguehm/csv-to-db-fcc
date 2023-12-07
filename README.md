@@ -251,11 +251,6 @@ erDiagram
         string Salon
     }
 
-    "Profesor_Imparte_Materia" {
-        int IdProfesor FK
-        int IdMateria FK
-    }
-
     "Evento_SeRealizaEn_Lugar" {
         int IdEvento FK
         int IdLugar FK
