@@ -12,13 +12,13 @@ CREATE TABLE IF NOT EXISTS Materia (
   -- que materias desbloquea?
 );
 
-CREATE TABLE IF NOT EXISTS Profesor_Imparte_Materia (
-  IdProfesor INTEGER NOT NULL,
-  IdMateria INTEGER NOT NULL,
-  -- PRIMARY KEY (IdProfesor, IdMateria),
-  FOREIGN KEY (IdProfesor) REFERENCES Profesor(IdProfesor),
-  FOREIGN KEY (IdMateria) REFERENCES Materia(IdMateria)
-);
+-- CREATE TABLE IF NOT EXISTS Profesor_Imparte_Materia (
+--   IdProfesor INTEGER NOT NULL,
+--   IdMateria INTEGER NOT NULL,
+--   -- PRIMARY KEY (IdProfesor, IdMateria),
+--   FOREIGN KEY (IdProfesor) REFERENCES Profesor(IdProfesor),
+--   FOREIGN KEY (IdMateria) REFERENCES Materia(IdMateria)
+-- );
 
 CREATE TABLE IF NOT EXISTS Clase (
   NRC INTEGER PRIMARY KEY,

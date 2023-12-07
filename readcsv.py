@@ -9,8 +9,6 @@ with open('./p2024.csv', newline='') as f:
     # lectura del cs
     reader = csv.DictReader(f)
     for row in reader:
-        # print(row)
-        # break
         # # Inserta en Profesor
         nombre_profe = row['Profesor']
         apellido_paterno, resto = nombre_profe.split(" - ", 1)
@@ -23,28 +21,21 @@ with open('./p2024.csv', newline='') as f:
         print("Apellido Paterno:", apellido_paterno)
         print("Apellido Materno:", apellido_materno)
         print("Nombre:", nombre)
-        print()
 
         cursor.execute(f"SELECT * FROM Profesor WHERE Nombre = \"{nombre}\" AND ApellidoPaterno = \"{apellido_paterno}\" AND ApellidoMaterno = \"{apellido_materno}\"")
 
         if bool(cursor.fetchall()) == False:
             cursor.execute(f"INSERT INTO Profesor(ApellidoPaterno, ApellidoMaterno, Nombre) VALUES (\"{apellido_paterno}\", \"{apellido_materno}\", \"{nombre}\")")
-        # cursor.execute(f'Select * from Profesor where nombre = "{row["Profesor"]}"')
-        # print(cursor.fetchall())
-
-        # bool() para saber is una lista esta vacia
 
         # Inserta en Materia
         nombre_materia = row['Materia']
         print("Materia:", nombre_materia)
-        print()
 
         cursor.execute(f"SELECT * FROM Materia WHERE NombreMateria = \"{nombre_materia}\"")
 
         if bool(cursor.fetchall()) == False:
             cursor.execute(f"INSERT INTO Materia(NombreMateria) VALUES (\"{nombre_materia}\")")
 
-        # Profesor imparte Materia
         cursor.execute(f"SELECT * FROM Profesor WHERE Nombre = \"{nombre}\" AND ApellidoPaterno = \"{apellido_paterno}\" AND ApellidoMaterno = \"{apellido_materno}\"")
 
         id_profesor = cursor.fetchone()[0]
@@ -55,13 +46,6 @@ with open('./p2024.csv', newline='') as f:
         id_materia = cursor.fetchone()[0]
         print("ID Materia:", id_materia)
         
-        cursor.execute(f"SELECT * FROM Profesor_Imparte_Materia WHERE IdProfesor = {id_profesor} AND IdMateria = {id_materia}")
-
-        if bool(cursor.fetchall()) == False:
-            cursor.execute(f"INSERT INTO Profesor_Imparte_Materia(IdProfesor, IdMateria) VALUES ({id_profesor}, {id_materia})")
-
-        # Inserta en Clase
-
         nrc = row['NRC']
 
         cursor.execute(f"SELECT * FROM Clase WHERE NRC = \"{nrc}\"")
@@ -106,6 +90,7 @@ with open('./p2024.csv', newline='') as f:
             cursor.execute(f"INSERT INTO Evento(NRC, Duracion, DiaSemana, HoraInicio) VALUES (\"{nrc}\", \"{duracion}\", \"{dia_semana}\", \"{hora_inicio}\")")
 
         # Inserta en Lugar
+        
         lugar = row['Salon']
         edificio, salon = lugar.split("/", 1)
         
@@ -127,11 +112,3 @@ with open('./p2024.csv', newline='') as f:
 
     conexion.commit()
     conexion.close()
-
-    """
-    select ApellidoPaterno, ApellidoMaterno, Nombre from Profesor where IdProfesor in (
-        select IdProfesor from Clase where NRC in (
-            select NRC from Evento where IdEvento in (
-                select IdEvento from Evento_SeRealizaEn_Lugar where IdLugar in (
-                    select IdLugar from Lugar where Edificio like '%EMA%'))));
-    """
